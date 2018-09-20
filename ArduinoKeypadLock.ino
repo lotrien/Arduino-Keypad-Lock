@@ -2,7 +2,7 @@
 #include <Servo.h>
 
 Servo locker;
-int button = 0;
+int button = 2;
 int lockerState = 0;
 int k[9];
 int closedPosition = 0;
@@ -16,14 +16,14 @@ char keys[ROWS][COLS] = {
   { '7', '8', '9' },
   { '*', '0', '#' }
 };
-byte rowPins[ROWS] = { 3, 4, 5, 6 }; // row pins
-byte colPins[COLS] = { 7, 8, 9 };    // col pins
+byte rowPins[ROWS] = { 9, 8, 7, 6 };
+byte colPins[COLS] = { 5, 4, 3 };
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 void setup() {
   locker.attach(10);
-  attachInterrupt(button, open, RISING);
+  attachInterrupt(digitalPinToInterrupt(button), open, RISING);
   keypad.addEventListener(keypadEvent);
 }
 
@@ -56,7 +56,7 @@ void keypadEvent(KeypadEvent key) {
 }
 
 void open() {
-  if (lockerState == 0){
+  if (lockerState == 0) {
     locker.write(closedPosition);
     lockerState = 1;
   } else if (lockerState == 1) {
